@@ -1,0 +1,28 @@
+service: translate-sls
+frameworkVersion: "3"
+
+provider:
+  profile: iamadmin
+  name: aws
+  runtime: nodejs14.x
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action: 'translate:*'
+          Resource: '*'
+
+functions:
+  translate:
+    handler: translate.handler
+    events:
+      - httpApi:
+          path: /
+          method: post
+
+plugins:
+    - serverless-webpack
+    - serverless-offline
+
+package:
+    individually: true
